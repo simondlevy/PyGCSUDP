@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 '''
-udpstick.py - Fly with Open Pilot GCS through a Logitech joystick.
+udpstick.py - Fly with Open Pilot GCS through a Logitech Extreme 3D Pro joystick.
 
+Requires: PyGame
 
 '''
 
