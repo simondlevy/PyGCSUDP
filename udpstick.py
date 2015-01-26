@@ -8,6 +8,12 @@ Requires: PyGame
 
 DELAY_SEC = 0.1
 
+# Set these for each OS (Windows 7 values shown here)
+PITCH_AXIS      = 1
+YAW_AXIS        = 0
+ROLL_AXIS       = 3
+THROTTLE_AXIS   = 2
+
 import sys
 import pygame
 import time
@@ -31,13 +37,13 @@ while True:
     # Get next PyGame event
     pygame.event.pump()
 
-    axis3 = js.get_axis(3)
+    throttle = js.get_axis(THROTTLE_AXIS)
 
-    if axis3 < 0:
+    if throttle < 0:
         moved_up = True
 
     # Never gets all the way to 1.0
-    if moved_up and (axis3 > 0.9999):
+    if moved_up and (throttle > 0.9999):
         break
 
 print('Ready... To quit, throttle down and click trigger & side button simultaneously')
@@ -49,17 +55,18 @@ while True:
     pygame.event.pump()
 
     # Get pitch, yaw, roll
-    pitch  = js.get_axis(1)
-    yaw   = js.get_axis(2)
-    roll = js.get_axis(0)
+    pitch  = -js.get_axis(PITCH_AXIS)
+    yaw   = js.get_axis(YAW_AXIS)
+    roll = js.get_axis(ROLL_AXIS)
 
     # Special handling for throttle
-    throttle = -js.get_axis(3) / 2 + 0.5
+    throttle = -js.get_axis(THROTTLE_AXIS) / 2 + 0.5
 
     if throttle < 1e-4:
         throttle = 0
 
     # Set GCS UDP
+    print('%+3.3f %+3.3f %+3.3f %+3.3f' % (pitch, roll, yaw, throttle))
     gcsudp.set(pitch, yaw, roll, throttle)
 
     time.sleep(DELAY_SEC)
