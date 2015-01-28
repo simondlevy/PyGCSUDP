@@ -4,7 +4,7 @@ udptx.py - Fly with Open Pilot GCS through an R/C transmitter connected via cabl
 
 Requires: PyGame, PyQuadStick
 
-Copyright (C) 2014 Simon D. Levy
+Copyright (C) 2015 Simon D. Levy
 
 This code is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -29,7 +29,7 @@ from quadstick.axial.rc.frsky import Taranis as Controller
 from gcsudp import GCSUDP
 
 DELAY_SEC   = 0.1
-ZERO_THRESH = 0.01
+ZERO_THRESH = 0.02
 
 from time import sleep
 
@@ -67,11 +67,18 @@ if __name__ == '__main__':
         # Get sticks, switches
         ((pitch,roll,yaw,throttle),(althold,poshold,autopilot)) = controller.poll()
 
+        # Avoid noise near -1
+        if negone(throttle):
+            throttle = -1 - ZERO_THRESH
+
+        # Convert throttle to [0,1]
+        throttle =  throttle / 2. + 0.5
+
         # Set GCS UDP, reversing roll and adjusting throttle to [0,1]
-        gcsudp.set(pitch, yaw, -roll, throttle / 2 + 0.5)
+        gcsudp.set(pitch, yaw, -roll, throttle)
 
         # Quit on throttle down, yaw left
-        if negone(throttle) and negone(yaw):
+        if (throttle <= 0) and negone(yaw):
             break
 
         # Chill a spell
