@@ -5,6 +5,7 @@ udpstick.py - Fly with Open Pilot GCS through a Logitech Extreme 3D Pro joystick
 Requires: PyGame
 
 Copyright (C) 2014 Simon D. Levy
+
 This code is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
 published by the Free Software Foundation, either version 3 of the
