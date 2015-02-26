@@ -55,12 +55,14 @@ class UDPTX(object):
         # Initiate controller
         self.controller = Controller(hidden=True)
 
-    def autopilot(self, demands, switches):
+    def holdpos(self, demands, switches):
         '''
-        Accepts (pitch,roll,yaw,throttle) demands and (alt-hold,pos-hold,autopilot) switches and returns
-        new demands.  Default method returns demands unmodified.
-        Override this method for your own alt-hold, pos-hold, and autopilot functionality.
+        Accepts (pitch,roll,yaw,throttle) demands and (alt-hold,pos-hold switches and returns
+        new demands.  Default method prints out demands and switches and returns demands unmodified.
+        Override this method for your own alt-hold, pos-hold functionality.
         '''
+
+        print('pitch=%+3.3f roll=%+3.3f yaw=%+3.3f throttle=%+3.3f | alt-hold=%5s pos-hold=%5s' % (demands+switches))
 
         return demands
 
@@ -100,10 +102,8 @@ class UDPTX(object):
             if (throttle <= 0) and self._negone(yaw):
                 break
 
-            # Run autopilot
-            (pitch,roll,yaw,throttle) = self.autopilot((pitch,roll,yaw,throttle),switches)
-
-            print('%+3.3f %+3.3f %+3.3f %+3.3f' % (pitch,roll,yaw,throttle))
+            # Modify demands based on alt-hold, pos-hold switches
+            (pitch,roll,yaw,throttle) = self.holdpos((pitch,roll,yaw,throttle),switches[0:2])
 
             # Set GCS UDP, reversing roll and adjusting throttle to [0,1]
             self.gcsudp.set(pitch, yaw, -roll, throttle)
