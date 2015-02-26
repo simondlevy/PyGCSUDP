@@ -25,7 +25,7 @@ from quadstick.axial.rc.frsky import Taranis as Controller
 
 from gcsudp import GCSUDP
 
-from time import sleep
+import time
 
 class UDPTX(object):
     '''
@@ -109,7 +109,7 @@ class UDPTX(object):
             self.gcsudp.set(pitch, yaw, -roll, throttle)
 
             # Chill a spell
-            sleep(self.delay_sec)
+            time.sleep(self.delay_sec)
 
         # Close UDP connection
         self.gcsudp.close()
@@ -119,4 +119,3 @@ if __name__ == '__main__':
     tx = UDPTX()
 
     tx.start()
-
