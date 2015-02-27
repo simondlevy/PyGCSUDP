@@ -72,7 +72,7 @@ class UDPTX(object):
         '''
 
         # Make sure throttle is in lowest position
-        print('Please turn off switches and go throttle down, yaw right to start')
+        print('Please turn on transmitter, then turn off switches and go throttle down, yaw right to start')
         moved_up = False
         while True:
 
