@@ -49,6 +49,9 @@ class UDPTX(object):
         self.delay_sec = delay_sec
         self.zero_thresh = zero_thresh
 
+        # Initialize status flag
+        self.is_running = False
+
         # Initiate UDP connnection
         self.gcsudp = GCSUDP()
 
@@ -72,7 +75,7 @@ class UDPTX(object):
         '''
 
         # Make sure throttle is in lowest position
-        print('Please turn on transmitter, then turn off switches and go throttle down, yaw right to start')
+        print('Please turn off switches and go throttle down, yaw right to start')
         moved_up = False
         while True:
 
@@ -84,6 +87,8 @@ class UDPTX(object):
                 break
 
         print('Ready... To quit, go throttle down, yaw left')
+
+        self.is_running = True
 
         # Start a-loopin'!
         while True:
@@ -110,6 +115,8 @@ class UDPTX(object):
 
             # Chill a spell
             time.sleep(self.delay_sec)
+
+        self.is_running = False
 
         # Close UDP connection
         self.gcsudp.close()
