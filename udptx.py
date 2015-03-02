@@ -74,6 +74,27 @@ class UDPTX(object):
         Starts polling and responding to transmitter.
         '''
 
+        # Need to turn switches on/off to make sure they're off to start
+        print('Please cycle switches on/off.. ')
+        while True:
+
+            # Poll controller throttle
+            (_,switches) = self.controller.poll()
+
+            # Never gets all the way to 1.0
+            if any(switches):
+                break
+        while True:
+
+            # Poll controller throttle
+            (_,switches) = self.controller.poll()
+
+            # Never gets all the way to 1.0
+            if not any(switches):
+                break
+
+
+
         # Make sure throttle is in lowest position
         print('Please turn off switches and go throttle down, yaw right to start')
         moved_up = False
