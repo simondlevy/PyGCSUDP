@@ -56,7 +56,10 @@ class UDPTX(object):
         self.gcsudp = GCSUDP()
 
         # Initiate controller
-        self.controller = Controller(hidden=True)
+        try:
+            self.controller = Controller(hidden=True)
+        except:
+            raise Exception('No transmitter')
 
     def holdpos(self, demands, switches):
         '''
